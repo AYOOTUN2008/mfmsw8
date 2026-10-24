@@ -41,3 +41,7 @@ These details are transparently marked as awaiting publication. There are no fab
 The user-supplied development blueprint informed the purple/cream visual system, modular React pages, restrained GSAP hero enhancement, current motion logo, responsive layouts, and staff CMS. It was treated as a creative brief with discretion to omit unnecessary libraries and features. No service schedule, programme date, address, ministry name, or official statement was inferred from suggestions in the brief.
 
 The NEW motion logo is sourced from `MFM NEW THUMNAIL (MOTION LOGO).mp4` and shipped as `new-motion-logo.mp4` with a verified poster. The old `MFM MOTION LOGO.mp4` is not used. See `docs/MEDIA-UPDATE.md`.
+
+## Headquarters-style opening
+
+A screenshot supplied by the user informed the full-width photographic hero, overlaid navigation, centred uppercase welcome, purple primary action, and warm outlined secondary action. The reference screenshot is not shipped as church photography. Only the supplied SW8 regional images are used for the three manual slides; no photograph with a pastoral name lower-third is used in the hero. The screenshot’s live and giving buttons are not copied without verified regional destinations.

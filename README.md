@@ -43,6 +43,6 @@ Features: homepage text, confirmed contact details, leadership, services, progra
 - `supabase/migrations`: database, RLS and private image storage policies.
 - `public/media`: supplied and optimized regional media.
 
-Pages are split into separate chunks. GSAP loads for desktop-style hero entrance and restrained pointer depth; pointer effects are limited to fine-pointer desktop devices, and reduced-motion mode disables decoration. Native browser scrolling is retained, so Lenis/WebGL/React Bits are not required. Videos load on request, and fonts are served locally.
+Pages are split into separate chunks. The opening follows the supplied headquarters screenshot: full-width regional photographs, dark overlay, overlaid navigation, and centred welcome text. Three photographs are selected manually with accessible arrow and dot controls; there is no automatic slideshow. GSAP adds a short entrance only, and reduced-motion mode disables it. Native browser scrolling is retained, so Lenis/WebGL/React Bits are not required. Videos load on request, and fonts are served locally.
 
 See [CONTENT-SOURCES.md](CONTENT-SOURCES.md) and [docs/MEDIA-UPDATE.md](docs/MEDIA-UPDATE.md) for asset provenance and information awaiting confirmation. The current/new motion identity is explicitly used; the old motion logo is not shipped. This regional website links to the international MFM website as a separate denominational resource.

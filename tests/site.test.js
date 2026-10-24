@@ -78,7 +78,7 @@ test('all public pages render the SW8 identity, working images, and correct anch
       const body = await page.locator('body').innerText();
       assert.match(body, /SW8/, `${route} must identify SW8`);
       assert.match(body, /Ijebu\s*\/\s*Remo/i, `${route} must identify the region`);
-      if (route === '/') assert.match(await page.getByRole('heading', { level: 1 }).innerText(), /A place of fire,\s*faith & miracles\./);
+      if (route === '/') assert.match(await page.getByRole('heading', { level: 1 }).innerText(), /Welcome\s+to\s+Mountain\s+of\s+Fire\s+and\s+Miracles\s+Ministries/i);
       if (route === '/about') await page.getByRole('heading', { name: 'Pastor Japheth Otujinrin' }).waitFor();
       await loadImages(page);
       for (const anchor of await page.locator('a[href^="#"]').all()) {
@@ -112,6 +112,56 @@ test('mobile menu opens, follows a real page link, and closes with Escape', { ti
     await loadImages(page);
     await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, 0); });
     await page.screenshot({ path: '/tmp/mfm-mobile.png', fullPage: true });
+  } finally { await page.close(); }
+});
+
+test('the photographic welcome hero changes only through its accessible carousel controls', { timeout: 30000 }, async () => {
+  const page = await openPage('/', { reducedMotion: 'no-preference' });
+  try {
+    await page.clock.install();
+    const hero = page.getByRole('region', { name: 'Welcome to MFM SW8 Ijebu/Remo', exact: true });
+    await hero.waitFor();
+    const photo = hero.locator('.hero-backdrop img');
+    const first = hero.getByRole('button', { name: 'Show photograph 1', exact: true });
+    const second = hero.getByRole('button', { name: 'Show photograph 2', exact: true });
+    const third = hero.getByRole('button', { name: 'Show photograph 3', exact: true });
+    assert.equal(await first.getAttribute('aria-pressed'), 'true');
+    assert.equal(await second.getAttribute('aria-pressed'), 'false');
+    const firstSource = await photo.getAttribute('src');
+    assert.ok(firstSource, 'The hero must display a real regional photograph');
+
+    await hero.getByRole('button', { name: 'Next photograph', exact: true }).click();
+    assert.equal(await second.getAttribute('aria-pressed'), 'true');
+    assert.equal(await first.getAttribute('aria-pressed'), 'false');
+    const secondSource = await photo.getAttribute('src');
+    assert.notEqual(secondSource, firstSource, 'Next must show another photograph');
+    await photo.evaluate(image => image.decode());
+
+    await hero.getByRole('button', { name: 'Previous photograph', exact: true }).click();
+    assert.equal(await first.getAttribute('aria-pressed'), 'true');
+    assert.equal(await photo.getAttribute('src'), firstSource);
+    await third.click();
+    assert.equal(await third.getAttribute('aria-pressed'), 'true');
+    const thirdSource = await photo.getAttribute('src');
+    assert.notEqual(thirdSource, secondSource);
+    assert.notEqual(thirdSource, firstSource);
+    await photo.evaluate(image => image.decode());
+
+    await hero.getByRole('button', { name: 'Next photograph', exact: true }).click();
+    assert.equal(await first.getAttribute('aria-pressed'), 'true', 'Next wraps from the last photograph to the first');
+    await hero.getByRole('button', { name: 'Previous photograph', exact: true }).click();
+    assert.equal(await third.getAttribute('aria-pressed'), 'true', 'Previous wraps from the first photograph to the last');
+    await page.clock.fastForward(60000);
+    assert.equal(await third.getAttribute('aria-pressed'), 'true', 'The carousel must never advance automatically');
+    assert.equal(await photo.getAttribute('src'), thirdSource);
+
+    const header = page.locator('.site-header');
+    assert.ok((await header.getAttribute('class')).includes('header-over-hero'), 'Home navigation must overlay the hero');
+    await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, 600); });
+    await page.waitForFunction(() => document.querySelector('.site-header').classList.contains('scrolled'));
+    const bounds = await header.boundingBox();
+    assert.ok(bounds && bounds.y >= 0 && bounds.y < 100, 'Navigation remains visible after scrolling');
+    assert.equal(await header.getByRole('link', { name: 'Our region', exact: true }).isVisible(), true);
   } finally { await page.close(); }
 });
 

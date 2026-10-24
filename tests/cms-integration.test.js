@@ -145,7 +145,7 @@ test('configured content outage retains the public shell without resurrecting lo
   const page = await newPage(mock);
   try {
     await page.getByRole('heading', { level: 1 }).waitFor();
-    assert.match(await page.getByRole('heading', { level: 1 }).innerText(), /A place of fire/);
+    assert.match(await page.getByRole('heading', { level: 1 }).innerText(), /Welcome to Mountain of Fire and Miracles Ministries/i);
     await page.getByRole('status').filter({ hasText: /temporarily unavailable/i }).waitFor();
     assert.equal(await page.getByRole('button', { name: /^View photo:/ }).count(), 0);
     await page.goto(`${origin}/about`, { waitUntil: 'networkidle' });

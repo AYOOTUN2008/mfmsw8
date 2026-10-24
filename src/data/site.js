@@ -6,9 +6,9 @@ export const identity = {
   social: "MFM Megaregion Ijebu-Ode",
 };
 export const defaults = {
-  hero_heading: "A place of fire, faith & miracles.",
+  hero_heading: "Welcome to Mountain of Fire and Miracles Ministries",
   hero_subheading: "Encounter God. Grow in His Word. Experience His power.",
-  hero_cta: "Join us",
+  hero_cta: "Worship with us",
   welcome_text:
     "A church family rooted in the Word, united in prayer, and growing together in faith. Welcome to Mountain of Fire and Miracles Ministries — SW8 Mega-Regional Headquarters, Ijebu/Remo.",
 };

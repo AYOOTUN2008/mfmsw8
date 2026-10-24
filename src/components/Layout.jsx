@@ -16,6 +16,7 @@ export function Header() {
   const [open, setOpen] = useState(false),
     [scrolled, setScrolled] = useState(false);
   const toggle = useRef(null);
+  const home = location.pathname === "/";
   useEffect(() => {
     const scroll = () => setScrolled(scrollY > 30);
     scroll();
@@ -45,15 +46,19 @@ export function Header() {
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
-      <div className="topline">
-        <div className="container">
-          <span>{identity.name}</span>
-          <span>
-            SW8 MEGA REGION <b>·</b> IJEBU / REMO
-          </span>
+      {!home && (
+        <div className="topline">
+          <div className="container">
+            <span>{identity.name}</span>
+            <span>
+              SW8 MEGA REGION <b>·</b> IJEBU / REMO
+            </span>
+          </div>
         </div>
-      </div>
-      <header className={`site-header ${scrolled ? "scrolled" : ""}`}>
+      )}
+      <header
+        className={`site-header ${home ? "header-over-hero" : ""} ${scrolled ? "scrolled" : ""}`}
+      >
         <div className="container header-inner">
           <Brand />
           <button
@@ -72,6 +77,11 @@ export function Header() {
             aria-label="Main navigation"
             className={open ? "open" : ""}
           >
+            {home && (
+              <a href="/" aria-current="page" onClick={() => setOpen(false)}>
+                Home
+              </a>
+            )}
             {navigation.map(([href, label]) => (
               <a
                 key={href}
@@ -172,7 +182,10 @@ export function Meta({ path }) {
       .querySelector('meta[property="og:description"]')
       .setAttribute("content", page.description);
     try {
-      const u = new URL(import.meta.env.VITE_SITE_URL || "https://mfmsw8-mega-region.vercel.app");
+      const u = new URL(
+        import.meta.env.VITE_SITE_URL ||
+          "https://mfmsw8-mega-region.vercel.app",
+      );
       if (u.protocol === "https:") {
         let link = document.querySelector('link[rel="canonical"]');
         if (!link) {
@@ -181,7 +194,9 @@ export function Meta({ path }) {
           document.head.append(link);
         }
         link.href = u.origin + path;
-          document.querySelector('meta[property="og:url"]')?.setAttribute("content", u.origin + path);
+        document
+          .querySelector('meta[property="og:url"]')
+          ?.setAttribute("content", u.origin + path);
       }
     } catch {}
   }, [path]);

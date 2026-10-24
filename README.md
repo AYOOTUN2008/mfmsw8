@@ -1,29 +1,48 @@
 # MFM SW8 Mega Region — Ijebu/Remo
 
-Responsive regional church website, built with Vite and plain JavaScript. This represents SW8 Mega-Regional Headquarters, Ijebu/Remo; it does not represent the international headquarters.
+A regional church website for Mountain of Fire and Miracles Ministries — **SW8 Mega-Regional Headquarters, Ijebu/Remo**. Includes eight public React pages and a separate staff CMS entry at `/admin.html` (also `/admin` on Vercel).
 
-## Development
+## Run locally
 
-Requires Node.js 22 or later and npm.
+Use Node.js 22+ and npm. Each cloud task already has an isolated checkout; use `/workspace/mfmsw8` and do not create worktrees unless requested.
 
 ```sh
-cd /workspace/mfmsw8
 npm ci
 npm run dev -- --port 5173
 ```
 
-## Production and validation
+No backend configuration is needed to view the public website. Without Supabase, the site uses verified local leadership/gallery content and transparent empty states for unconfirmed details. Staff editing remains unavailable until connected; there is no demo password or fake login.
+
+## Build and test
 
 ```sh
 npm run build
 npm test
-npm run preview -- --port 4173
 ```
 
-The browser tests start their own production preview on port 4174. Build first. Tests use `/usr/bin/chromium`; set `CHROMIUM_PATH` if Chromium is elsewhere. They verify content and image loading, anchor targets, mobile menu interactions, overflow at five viewport widths, and actual regional video playback. Fonts and media are locally served. No API keys or external services are needed to run this website.
+Browser tests start their own production preview on port 4174, exercise the eight public routes and admin setup, eleven viewport widths, navigation, gallery focus/dialogs, reduced motion and actual playback of the new motion logo and regional film. Tests use `/usr/bin/chromium`; set `CHROMIUM_PATH` for another installation. The suite also checks staff UI flows with mocked Supabase transport and SQL authorization using local PostgreSQL emulation. These checks do not replace live Supabase acceptance tests in the setup guide.
 
-## Content and supplied assets
+## Deploy to Vercel
 
-See [CONTENT-SOURCES.md](CONTENT-SOURCES.md) for provenance and details awaiting confirmation. Edit content in `src/main.js` and styles in `src/style.css`. Public media is in `public/media`. The hero and gallery use the supplied regional service photographs; the messages section uses the supplied Bible-and-cross worship artwork. The official ministry link opens an external denominational resource; it is not a regional contact link.
+Import `AYOOTUN2008/mfmsw8`, choose Vite, build with `npm run build`, output `dist`. `vercel.json` handles the public page routes, `/admin`, and security headers. The separate `admin.html` build entry is always emitted. No private keys are needed in the browser.
 
-The build output in `dist` can be deployed to any static host. Deployment has not been performed.
+The confirmed production address is `https://mfmsw8-mega-region.vercel.app/`. Canonical tags, Open Graph metadata, and the generated sitemap use this address. Set `VITE_SITE_URL` when moving to a custom HTTPS domain. Staff routes are excluded from indexing.
+
+## Connect the church office
+
+Follow [docs/CMS-SETUP.md](docs/CMS-SETUP.md) to create a church-owned Supabase project, apply RLS and storage SQL, approve staff accounts, configure public project values in Vercel, and verify live authorization. Use `.env.example` for local public configuration. Never put service-role keys, database passwords, or staff passwords in browser code or chat.
+
+Features: homepage text, confirmed contact details, leadership, services, programmes, announcements, sermons via external video/audio URLs, ministries, gallery, draft/publish workflow, previews, photo uploads, and a private media library. Image uploads are limited to 5 MB and optimized to 1,800 pixels. Push notifications and direct video-file uploads are not implemented.
+
+## Architecture and content
+
+- `src/pages`, `src/sections`, `src/components`: public React UI.
+- `src/hooks`: shared content context and motion enhancement.
+- `src/admin`: separate staff UI and styles.
+- `src/services`, `src/lib`: Supabase access and validation, separated from UI.
+- `supabase/migrations`: database, RLS and private image storage policies.
+- `public/media`: supplied and optimized regional media.
+
+Pages are split into separate chunks. GSAP loads for desktop-style hero entrance and restrained pointer depth; pointer effects are limited to fine-pointer desktop devices, and reduced-motion mode disables decoration. Native browser scrolling is retained, so Lenis/WebGL/React Bits are not required. Videos load on request, and fonts are served locally.
+
+See [CONTENT-SOURCES.md](CONTENT-SOURCES.md) and [docs/MEDIA-UPDATE.md](docs/MEDIA-UPDATE.md) for asset provenance and information awaiting confirmation. The current/new motion identity is explicitly used; the old motion logo is not shipped. This regional website links to the international MFM website as a separate denominational resource.

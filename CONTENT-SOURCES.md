@@ -35,3 +35,9 @@ The denominational reference https://www.mountainoffire.org was blocked by the e
 - Exact official social profile URLs.
 
 These details are transparently marked as awaiting publication. There are no fabricated contacts, donation links, working contact forms, service times, event dates, or sermon listings.
+
+## Blueprint redesign
+
+The user-supplied development blueprint informed the purple/cream visual system, modular React pages, restrained GSAP hero enhancement, current motion logo, responsive layouts, and staff CMS. It was treated as a creative brief with discretion to omit unnecessary libraries and features. No service schedule, programme date, address, ministry name, or official statement was inferred from suggestions in the brief.
+
+The NEW motion logo is sourced from `MFM NEW THUMNAIL (MOTION LOGO).mp4` and shipped as `new-motion-logo.mp4` with a verified poster. The old `MFM MOTION LOGO.mp4` is not used. See `docs/MEDIA-UPDATE.md`.
